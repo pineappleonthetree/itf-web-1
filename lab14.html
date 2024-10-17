@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Book</title>
+    <link rel="stylesheet" href="phone.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1>Phone Book</h1>
+    </div>
+    <div class="avatar">
+        <img src="pro.PNG" alt="pinaeapple" id="image">
+        <div class="notification">1</div>
+    </div>
+    <div class="name">
+        <a href="https://github.com/pineappleonthetree/itf-web-1-1.git" target="_blank" id="username">Chonticha Konthaphakdee 67070033</a>
+    </div>
+    <div class="input-field">
+        <div class="input-group">
+            <label for="username_input">Set Username: </label>
+            <input type="text" placeholder="Enter Username" id="username_input">
+            <button onclick="change_username();">SET</button>
+        </div>
+        <div class="input-group">
+            <label for="url_input">Set URL: </label>
+            <input type="text" placeholder="Enter Image URL" id="url_input">
+            <button onclick="change_url();">SET</button>
+        </div>
+    </div>
+    <div class="phone-list">
+        <div class="list-input">
+            <h3>Phone Number List</h3>
+            <div>
+                <input type="text" placeholder="Enter Name" id="name_input">
+                <input type="text" placeholder="Enter Phone Number" id="phone_input">
+                <button onclick="add_to_table();">ADD</button>
+                <button onclick="downloadCSV();">EXPORT</button>
+            </div>
+        </div>
+        <div>
+            <table id="phone_table" border="1">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function change_username() {
+            let username = document.getElementById("username_input").value;
+            document.getElementById("username").innerHTML = username;
+        }
+
+        function change_url() {
+            let url_input = document.getElementById("url_input").value;
+            let image = document.getElementById("image");
+            image.src = url_input;
+        }
+
+        let count = 0;
+
+        function add_to_table() {
+            let name = document.getElementById("name_input").value;
+            let phone = document.getElementById("phone_input").value;
+
+            if (name === "" || phone === "") {
+                alert("Please fill in both fields.");
+                return;
+            }
+
+            count++;
+
+            let table = document.getElementById("phone_table").getElementsByTagName("tbody")[0];
+
+            let newRow = table.insertRow();
+
+            let cell1 = newRow.insertCell(0);
+            let cell2 = newRow.insertCell(1);
+            let cell3 = newRow.insertCell(2);
+
+            cell1.innerHTML = count;
+            cell2.innerHTML = name;
+            cell3.innerHTML = phone;
+
+            document.getElementById("name_input").value = "";
+            document.getElementById("phone_input").value = "";
+        }
+
+        function downloadCSV() {
+            let table = document.getElementById("phone_table");
+            let rows = table.querySelectorAll("tr");
+
+            let csv = [];
+
+            for (let i = 0; i < rows.length; i++) {
+                let row = [];
+                let cols = rows[i].querySelectorAll("th, td");
+
+                for (let j = 0; j < cols.length; j++) {
+                    row.push(cols[j].innerText);
+                }
+
+                csv.push(row.join(","));
+            }
+
+            let csvString = csv.join("\n");
+
+            let blob = new Blob([csvString], { type: "text/csv" });
+
+            let downloadLink = document.createElement("a");
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = "phone_book.csv";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    </script>
+</body>
+
+</html>

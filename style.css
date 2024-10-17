@@ -35,6 +35,12 @@ section{
     column-gap: 45px;
 }
 
+.newpage{
+    color: rgb(250, 255, 224);
+    font-size: 20px;
+    text-decoration: none;
+}
+
 .content{
     max-width: 650px;
     margin: 60px 100px;
